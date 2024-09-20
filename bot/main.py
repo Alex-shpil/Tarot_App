@@ -11,7 +11,8 @@ from aiogram import Bot, Dispatcher, html, types, F
 from aiogram.filters import CommandStart, Command
 from aiogram.enums import ParseMode
 from aiogram.client.default import DefaultBotProperties
-from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton, BufferedInputFile, FSInputFile
+from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton, BufferedInputFile, FSInputFile, \
+    ReplyKeyboardMarkup, WebAppInfo
 from aiogram.types import CallbackQuery
 from dotenv import load_dotenv
 import pytonconnect.exceptions
@@ -19,6 +20,7 @@ from pytonconnect import TonConnect
 from tc_storage import TcStorage
 from messages import get_comment_message
 from ai_module import call_openai
+from aiogram.types.web_app_info import WebAppInfo
 
 
 
@@ -54,13 +56,15 @@ def create_main_menu():
     button_invite = InlineKeyboardButton(text="Invite a Friend", callback_data="invite_friend")
     button_wish = InlineKeyboardButton(text="Wish", callback_data="wish")
     button_wallet = InlineKeyboardButton(text="Connect TON Wallet", callback_data="connect_wallet")
+    button_test = InlineKeyboardButton(text="Test", url="https://asdasdasf.my.canva.site/dagrofkge3a")
 
     # Inline keyboard with buttons arranged in rows
     return InlineKeyboardMarkup(inline_keyboard=[
         [button_start],
         [button_wish],
         [button_prophet, button_invite],
-        [button_wallet]
+        [button_wallet],
+        [button_test]
     ])
 
 @dp.message(CommandStart())
