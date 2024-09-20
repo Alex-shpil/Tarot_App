@@ -1,0 +1,55 @@
+# Python Bytecode
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environment
+venv/
+env/
+ENV/
+.venv/
+.VENV/
+.idea/
+
+# Logs
+*.log
+*.log.*
+
+# Ignore environment variables and secrets
+.env
+.keystore
+
+# Ignore compiled code
+*.class
+*.o
+*.so
+
+# Ignore OS-specific files
+.DS_Store  # macOS
+
+# Ignore Pycharm project files
+.idea/
+
+# Ignore Jupyter notebook checkpoints
+.ipynb_checkpoints/
+
+# Ignore cache files
+*.cache
+*.lock
+*.gz
+*.zip
+*.tar.gz
+*.tgz
+
+# Ignore database
+*.sqlite3
+*.db
+*.sqlite
+*.sql
+
+# Ignore build artifacts
+build/
+dist/
+*.egg-info/
+*.egg
+*.whl
