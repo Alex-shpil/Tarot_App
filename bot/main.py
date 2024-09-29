@@ -54,17 +54,15 @@ def create_main_menu():
     button_start = InlineKeyboardButton(text="Start Journey", callback_data="start_journey")
     button_prophet = InlineKeyboardButton(text="Get a Prophecy", callback_data="get_prophecy")
     button_invite = InlineKeyboardButton(text="Invite a Friend", callback_data="invite_friend")
-    button_wish = InlineKeyboardButton(text="Wish", callback_data="wish")
+    button_wish = InlineKeyboardButton(text="Moto", callback_data="moto")
     button_wallet = InlineKeyboardButton(text="Connect TON Wallet", callback_data="connect_wallet")
-    button_test = InlineKeyboardButton(text="Test", url="https://asdasdasf.my.canva.site/dagrofkge3a")
 
     # Inline keyboard with buttons arranged in rows
     return InlineKeyboardMarkup(inline_keyboard=[
         [button_start],
-        [button_wish],
-        [button_prophet, button_invite],
-        [button_wallet],
-        [button_test]
+        [button_prophet, button_wish],
+        [button_invite],
+        [button_wallet]
     ])
 
 @dp.message(CommandStart())
@@ -198,14 +196,14 @@ async def back_to_main_menu(callback_query: CallbackQuery):
     await callback_query.message.edit_text("Back to the main menu!", reply_markup=markup)
 
 
-@dp.callback_query(lambda call: call.data in ["start_journey", "wish", "get_prophecy", "invite_friend"])
+@dp.callback_query(lambda call: call.data in ["start_journey", "moto", "get_prophecy", "invite_friend"])
 async def main_menu_callback_handler(callback_query: CallbackQuery):
     if callback_query.data == "start_journey":
         await process_callback(callback_query)
-    elif callback_query.data == "wish":
-        await process_callback(callback_query)
+    elif callback_query.data == "moto":
+        await handle_moto(message=callback_query.message)
     elif callback_query.data == "get_prophecy":
-        await handle_get_prophecy(callback_query)
+        await handle_prophet(message=callback_query.message)
     elif callback_query.data == "invite_friend":
         await handle_invite_friend(callback_query)
 
@@ -213,14 +211,17 @@ async def main_menu_callback_handler(callback_query: CallbackQuery):
 async def process_callback(callback_query: CallbackQuery):
     await callback_query.message.answer(f"You've started your journey, {html.bold(callback_query.from_user.full_name)}!")
 
-@dp.callback_query(F.data == "wish")
-async def process_callback(callback_query: CallbackQuery):
-    await callback_query.message.answer("Your wish will be fulfilled! You deserve it!")
+@dp.callback_query(F.data == "moto")
+async def handle_moto(message: types.Message):
+    """Handles the /moto command."""
+    user_input = "Give me a powerful motivational motto in 15 words or less to inspire me today"
+    await handle_command(message, user_input)
 
 @dp.callback_query(F.data == "get_prophecy")
-async def handle_get_prophecy(callback_query: CallbackQuery):
-    """Handles the 'Get a Prophecy' button press."""
-    await callback_query.message.answer("The prophecy is on its way!")
+async def handle_prophet(message: types.Message):
+    """Handles the /prophet command."""
+    user_input = "Give me an inspirational prophecy in 15 words or less that motivates and uplifts"
+    await handle_command(message, user_input)
 
 @dp.callback_query(F.data == "invite_friend")
 async def handle_invite_friend(callback_query: CallbackQuery):
@@ -232,22 +233,7 @@ async def handle_command(message: types.Message, user_input: str):
     bot_response = await call_openai(user_input)
     await message.reply(bot_response)
 
-@dp.message(Command("prophet"))
-async def handle_prophet(message: types.Message):
-    """Handles the /prophet command."""
-    user_input = "Give me a short prophecy in 5 words which inspires me"
-    await handle_command(message, user_input)
 
-@dp.message(Command("moto"))
-async def handle_moto(message: types.Message):
-    """Handles the /moto command."""
-    user_input = "Give me a moto for today. Inspire me"
-    await handle_command(message, user_input)
-
-@dp.message(Command("wish"))
-async def handle_wish(message: types.Message):
-    """Handles the /moto command."""
-    await message.answer("Your wish will be fulfilled! You deserve it!")
 
 async def main():
     """Starts the bot and begins polling."""

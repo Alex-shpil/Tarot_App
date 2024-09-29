@@ -33,10 +33,10 @@ async def call_openai(user_input: str) -> str:
     """Handles OpenAI API calls with retry logic using backoff."""
     try:
         response = await completions_with_backoff(
-            model="gpt-3.5-turbo",  # or "gpt-4" if available
+            model="gpt-4o-mini",  # or "gpt-4" if available
             messages=[{"role": "user", "content": user_input}]
         )
-        return response.choices[0].message["content"].strip()
+        return response.choices[0].message.content.strip()
 
     except OpenAIError as e:
         logging.error(f"OpenAI API error: {e}")
